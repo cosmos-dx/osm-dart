@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+      .imguserclass {
+          border-radius: 50%;
+          margin-top: -5px;
+          width:35px; height:35px;
+        }
+      
+      .imguserclass:hover{
+          background-color:rgb(72, 255, 0);
+          color: rgb(5, 0, 0);
+          box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+          transform: translateY(-0.25em);
+        }
+
+      .imguploadclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+      }
+      .dartimgclass {
+        border-radius: 50%;
+      }
+
+      .navheader {
+        display: inline-flex;
+        margin: auto;
+        width: inherit;
+        position: fixed;
+        font-family: cursive, bold;
+        padding: 0px 50px 0px 50px; 
+        text-align: center;
+        color: #99ffcc;
+        
+      }
+      .osmheader {min-width: 70px}
+      .useranchor {
+        font-size: 1.0em;
+        padding: 5px;
+        color: white;
+      }
+    </style> 
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/navburger.css"/>
+    <link rel="stylesheet" href="../public/assets/css/mystyles.css"> 
+    <link rel="stylesheet" href="../public/assets/css/bootstrap.css"> 
+    <script type = "text/javascript"  src="../public/assets/js/minajax.js"></script>
+    <script type = "text/javascript"  src="../public/assets/js/rmsnav.js"></script>
+
+    <!-- <script type = "text/javascript"  src= 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script> -->
+    <title><%= spinfo.title %></title>
+</head>
+
+    <body>
+
+        <div class="burgernavheader">
+               
+               <div class="navheader">
+                
+                <label class="osmheader"><a href="/useraccount/<%= username %>?fname=<%= firstname %>">
+                  <img class="imguserclass " src="..//<%= spinfo.userdp %>" alt="&#9785;"></a></label>
+                
+
+                <label><a href="/osmtl">
+                  <img class="imguserclass " src="/public/assets/img/home.png" alt="OSMHome"></a></label>
+
+               <!--   
+                <label class="osmheader"><a class="myanchor2" id = "osmtlclick" 
+                  href="/osmtl">
+                OSLHome</a> </label>
+                -->
+
+                <label style="width:10px;"></label>
+                
+
+                <label><a href="/osmtrendsearch">
+                  <img class="imguserclass " src="/public/assets/img/search.jpg" alt="Search"></a></label>
+
+               <!--   
+                <label class="osmheader"><a class="myanchor2" id="osmtprofileclick" name = "trend" 
+                  href="/osmtrendsearch">
+                Trend</a></label>
+                -->
+                <label class="osmheader"><a class="myanchor2" 
+                  href="/osmnotifications">
+                  <%= spinfo.notecount %> 
+                - &#x1F514;</a> </label> <!-- or bell icon &#128276;  -->
+                
+                <label class="osmheader" ><a class="useranchor" href="/osmprofile"><%= firstname %></a></label>
+                
+                </div>
+               
+                <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+                <label for="openSidebarMenu" class="sidebarIconToggle">
+                    <div class="spinner diagonal part-1"></div>
+                    <div class="spinner horizontal"></div>
+                    <div class="spinner diagonal part-2"></div>
+                </label>
+                
+                
+                <label class="rmslabel1" style="width:1000px;" ></label>
+                <div id="sidebarMenu">
+                  <ul class="sidebarMenuInner">
+                    <li><label><img class="imguserclass " src="..//<%= spinfo.userdp %>" alt="&#9785;"></label></li>
+                    <li><a href="/useraccount/<%= username %>?fname=<%= firstname %>">
+                     USER ACCOUNT </a> </li>
+                    <li><a href="/firstpage/?username=<%= username %>&firstname=<%= firstname %>">
+                    Word Dictionary</a> </li>
+                    <li><a href="/osmlogin">
+                    LogOut</a></li> 
+                    <br><br><br>
+                  </ul>
+                </div>
+        </div>

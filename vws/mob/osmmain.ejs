@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+      .imguserclass {
+          border-radius: 50%;
+          width:7%; height:7%;
+        }
+      .imguploadclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+      }
+      .dartimgclass {
+        border-radius: 50%;
+        margin-top: 90%;
+        margin-left:60%;
+        width:50px; height:50px;
+        position: fixed;
+      }
+      .myDivTop {
+        border-radius: 15px 15px 20px 20px;
+        background-color: snow;    
+        text-align: left;
+        margin-left: -6%;
+        width : 76%;
+        height:100%;
+      }
+      .myDiv {
+        border-radius: 15px 15px 20px 20px;
+        background-color: snow;    
+        text-align: left;
+        width : 75%;
+        height:100%;
+      }
+
+      .namedp{
+        display: inline-flex;
+        font-size: 0.75em;
+        color: navy;
+        width: 350px;
+        }
+
+      .mobbuttonosm{
+        display: inline-flex;
+        color: navy;
+        height:100%;
+        }
+
+      .preLeftAlign{
+          padding-left: 25px;
+          margin-top: -25px;
+          text-align: left;
+          color: black;
+          min-width: 350px;
+          min-height: 100px;
+        }
+
+      .hoverwdgreply{
+          font-size: 0.85em; 
+          color: navy;
+          cursor:pointer;
+          background-color:powderblue;
+          border-radius: 10px 10px 10px 10px;
+        }
+      .hoverwdgreply:hover{
+          background-color:rgb(72, 255, 0);
+          color: rgb(5, 0, 0);
+          box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+          transform: translateY(-0.25em);
+        }
+       
+      .likebtn{
+          background: url(/public/assets/img/like.png);
+          width: 35px;
+          cursor:pointer;
+          background-color:snow;
+          border-radius: 10px 10px 10px 10px;
+         }
+
+      .dislikebtn{
+          background: url(/public/assets/img/dislike.png);
+          width: 35px;
+          cursor:pointer;
+          background-color:snow;
+          border-radius: 10px 10px 10px 10px;
+         }
+
+      .likebtn:hover{
+          background-color:rgb(72, 255, 0);
+          color: rgb(5, 0, 0);
+          box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+          transform: translateY(-0.25em);
+        }
+
+      .dislikebtn:hover{
+          background-color:rgb(72, 255, 0);
+          color: rgb(5, 0, 0);
+          box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+          transform: translateY(-0.25em);
+        }
+    </style> 
+
+<%- include('osmheader.ejs') %>
+
+<div  style="width:135%; background-image: url('/public/assets/img/myimg.gif');">
+      
+  <div name="dartopen">
+    
+    <form action="/osmpostopen" method="POST" id = "upostform" 
+       dataType="json", contentType = "application/json">
+
+      <input type="image" src="/public/assets/img/osmpost.png" alt="Submit" class="dartimgclass"
+         name='usubmit' id='usubmit' value="<%= spinfo %>" > 
+
+      <input type='text' name='username' style="display:none;" value= "<%= spinfo.user %>" />
+      <input type='text' name='firstname' style="display:none;" value= "<%= spinfo.firstname %>" />
+    </form>
+  
+  </div>
+
+  <br><br><br>
+
+  <div id='osmfeeds'>
+    <h6><%= search_result %>  </h6> 
+  <ul>
+  <% pg.forEach((textdt)=> { %>
+  <div >
+    <form action="/osmexpand" method = "POST" id = "expand" dataType="json", contentType = "application/json">
+      
+        <input type="hidden" name="mainuser" value="<%= username %>-<%= spinfo.firstname %> "></input>
+        <input type="hidden" name="postdata" value="<%= JSON.stringify(textdt) %>"></input>
+        <input type="hidden" name="ppath" value="<%= textdt.path %>"></input>
+        <button class="myDivTop" type="submit"  id="expandpath-<%= textdt.path %>" name="expandbtn" value=''> 
+          <label class="myDivTop">
+            <p class="namedp" >
+              <a href="/useraccount/<%= textdt.username %>?fname=<%= textdt.firstname %>">
+               <img class="imguserclass" src="..//<%= textdt.path.split('\\').slice(0, 
+              textdt.path.split('\\').length-1).join('\\')+'\\'+imgdir+'\\'+
+              textdt.username+'.jpg' %>" alt="osmimg" >
+            
+              <label style="padding-left: 10px;"> @<%= textdt.username %>[<%= textdt.firstname %>]- <%= textdt.created %></label>
+             </a>
+            </p>
+                
+            <% if(textdt.img.length > 0){ %>
+               <img src="..//<%= textdt.img %>" alt="osmimg" width="50%" height="50%">
+            <% }  %>
+            <pre class="preLeftAlign">
+            <br/><%= textdt.text %>
+            </pre>
+            </label>
+          </button>
+
+        <br/>
+
+      <div class="mobbuttonosm">
+
+      <div id="divosmtttl-<%= textdt.path %>" class="osmtooltip"
+          style="display:inline-flex;" list="userld" >
+        <input type="button" class="hoverwdgreply"  id='<%= textdt.path %>' name="likeby"
+         value="<%= textdt.ld.lcount %>" onclick="onLikeby(this.id)" />
+      </div>
+
+        <input type="button"  id='<%= textdt.path %>' name="like" class="likebtn"
+          onclick="onLike(this.id)"/>
+      <!--
+        <input type="button" id="likecount<%= textdt.path %>" name="likecount" class="hoverwdgreply"
+          value="<%= textdt.ld.lcount %>"  />
+      -->
+        <input type="button" id='<%= textdt.path %>' name="dislike" class="dislikebtn"
+          onclick="onDisLike(this.id)" />
+      <!--
+        <input type="button" id="dislikecount<%= textdt.path %>" name="dislikecount" class="wdgreply"
+          value='<%= textdt.ld.dcount %>' />
+      -->
+      <div id="divosmtttd-<%= textdt.path %>" class="osmtooltip" 
+          style="display:inline-flex;" list="userld" >
+        <input type="button" class="hoverwdgreply" id='<%= textdt.path %>' name="dislikeby"
+             value="<%= textdt.ld.dcount %>" onclick="onDisLikeby(this.id)" />
+      </div>
+
+        <input type="submit" class="hoverwdgreply" id="<%= textdt.path %>"  name="reply"
+          value="<%= textdt.rcount %> Reply" />
+       
+      </div>
+      <br>
+      </form>  
+    </div>
+       
+    <div class="buttonosm">
+      <div id="reply-<%= textdt.path %>" style="display:none;">
+        <br>
+        <textarea type='text' name='upost' id='ureply-<%= textdt.path %>' cols="40"></textarea>
+        <div class="mobbuttonosm">
+            
+            <button class="labellikedp" id="replylike-<%= textdt.path %>" 
+                name="replylike-<%= textdt.path %>" value='<%= textdt.path %>'>
+            <img src="/public/assets/img/like.png" height="80%" width="80%" /></button>
+            <label class="labellikedp" id="replylikecount-<%= textdt.path %>">
+                <%= textdt.like %></label>
+            <button class="labellikedp" id="replydislike-<%= textdt.path %>"
+             name="replydislike-<%= textdt.path %>" value='<%= textdt.path %>'>
+                <img src="/public/assets/img/dislike.png" height="80%" width="80%" /></button>
+            <label class="labellikedp" id="replylikecount-<%= textdt.path %>">
+                <%= textdt.dislike %></label>
+            
+            <input type="button" id="roreply-<%= textdt.path %>"  name="roreply"
+            value="POST" onclick="onROReply(this.id)" />
+        </div>
+      </div>
+
+      <!------  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx            -->
+      <div id="append-reply-<%= textdt.path %>" style="display:none;">
+          <br>
+          <div class="mobbuttonosm">
+          </div>
+      </div>
+        <!------  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx            -->
+
+
+    </div>
+    <hr />
+
+  <% }) %>
+  
+  </div>
+  </ul>
+
+  </div>
+
+</div>
+
+</body>
+
+<script >
+    /*
+    */
+    var spinfo = '<%= JSON.stringify(spinfo) %>'; 
+    var username = '<%= spinfo.user %>'; 
+    var firstname = '<%= spinfo.firstname %>'; 
+    var postfrom = '<%= spinfo.title %>'; 
+    var imgdir = '<%= imgdir %>'; 
+    var lastscrollTop = 0;
+    var staticscrollvalue = 200;
+    var scrollcount = staticscrollvalue; 
+    var countclick = 0; 
+
+    window.addEventListener('scroll',(event)=>{
+      var scpos = window.pageYOffset || document.documentElement.scrollTop;
+      //console.log(scpos, ' scrolling.....', scrollcount)
+      if (scpos > lastscrollTop){
+        if (scpos > scrollcount){
+            scrollcount += staticscrollvalue
+
+            //console.log(scrollcount, ' downnnn scrolling event fired for forward reload......', scrollcount)
+            $.ajax({
+                url:"/chunkreloadDOWN", type : "GET", 
+                data : {'direction' : 'DOWN', 'username':username, 'firstname':firstname, 'title':postfrom},
+                contentType: "application/json",
+                dataType: 'json',
+                success : function(result){
+                  var pg = result['success']['data'];
+                  var feedhtml = '';
+                  for (i = 0; i < pg.length; i++){
+                    var textdt = pg[i];
+                    
+                    var jdata = JSON.stringify(pg[i])
+                    //console.log(jdata) 
+                    var username = textdt.username ;
+                    var ppath = textdt.path ;
+                    var ppathlen = ppath.split('\\').length-1 ;
+                    var imgtransitdir = 'imgtransitdir';
+
+                    var imgpath = ppath.split('\\').slice(0, ppathlen).join('\\')+'\\'+imgtransitdir+'\\'+username+'.jpg' 
+                    feedhtml += ''+
+                        '<div><form action="/osmexpand" method = "POST" id = "expand" dataType="json", contentType = //"application/json">'+
+                        '<div>'+
+                        '<input type="hidden" name="mainuser" value=" '+username+'-'+firstname+'"></input>'+
+                        '<input type="hidden" name="ppath" id="pathid" value="'+ppath+'"></input>'+
+                        '<input type="hidden" name="postdata" value='+jdata+'></input>'+
+                        '<button class="myDiv" type="submit"  id="expandpath-'+ppath+'" name="expandbtn" value="">'+
+
+                        '<label class="myDiv"><p class="namedp"><a href="/useraccount/'+username+'?fname='+firstname+'"><img class="imguserclass" '+
+                        'src="..//'+imgpath+'" alt="osmimg" width="10%" height="10%">'+
+
+                        '<label style="padding-left: 10px;"> @ '+username +'['+textdt.firstname +'] - '+textdt.created+'</label></a></p>'
+                    jdata = {};    
+                    if(textdt.img.length > 0){feedhtml +='<img src="..//'+textdt.img+'" alt="osmimg" width="50%" height="50%">'}
+
+                    feedhtml += '<pre class="preLeftAlign"><br/>'+textdt.text+'</pre></label></button></div>'
+                    feedhtml += '<div class="mobbuttonosm">&nbsp; &nbsp; &nbsp; &nbsp; <div id="divosmtttl-'+ppath+'" class="osmtooltip" style="display:inline-flex;" list="userld" >'+
+                //'<input type="button" class="wdgreply"  id="likeby-'+ppath+'" name="likeby" value="Like-By" onclick="onLikeby(this.id)" />'+
+                
+                '<input type="button" class="hoverwdgreply"  id="'+ppath+'" name="likeby" value="'+textdt.ld.lcount+'" onclick="onLikeby(this.id)" />'+
+                '</div>'+ 
+                '<input type="button"  id="'+ppath+'" name="like" class="likebtn" onclick="onLike(this.id)"/>'+
+             
+                //'<input type="button" id="likecount'+ppath+'" name="likecount" class="wdgreply" value="'+textdt.ld.lcount+'" />'+
+                '<input type="button" id="'+ppath+'" name="dislike" class="dislikebtn" onclick="onDisLike(this.id)" />'+
+                //'<input type="button" id="dislikecount'+ppath+'" name="dislikecount" class="wdgreply" value="'+textdt.ld.dcount+'" />'+
+                '<div id="divosmtttd-'+ppath+'" class="osmtooltip" style="display:inline-flex;" list="userld" >'+
+                '<input type="button" class="hoverwdgreply" id="'+ppath+'" name="dislikeby"'+
+                '    value="'+textdt.ld.dcount+'" onclick="onDisLikeby(this.id)" />'+
+                '</div>'+
+                '<input type="submit" class="hoverwdgreply" style="font-size:1em;" id="'+ppath+'" name="reply" value="'+textdt.rcount+' Reply" /> '+
+                
+                '</div><br/></form></div>'+
+
+                '<div class="buttonosm">'+
+                '  <div id="reply-'+ppath+'" style="display:none;">'+
+                '   <br>'+
+                '   <textarea type="text" name="upost" id="ureply-'+ppath+'" cols="40"></textarea>'+
+                '    <div class="mobbuttonosm">'+
+                '      <button class="labellikedp" id="replylike-'+ppath+'" '+
+                '          name="replylike-'+ppath+'" value="'+ppath+'">'+
+                '     <img src="/public/assets/img/like.png" height="80%" width="80%" /></button>'+
+                '      <label class="labellikedp" id="replylikecount-'+ppath+'"> '+textdt.dislike+'</label>'+
+                '      <button class="labellikedp" id="replydislike-'+ppath+'" '+
+                '       name="replydislike-'+ppath+'" value="'+ppath+'">'+
+                '          <img src="/public/assets/img/dislike.png" height="80%" width="80%" /></button>'+
+                '      <label class="labellikedp" id="replylikecount-'+ppath+'">'+textdt.dislike+'</label>'+
+                      
+                '      <input type="button" id="roreply-'+ppath+'"  name="roreply" value="POST" onclick="onROReply(this.id)" />'+
+                ' </div>'+
+                '</div>'+
+                '<div id="append-reply-'+ppath+'" style="display:none;">'+
+                '   <br>'+
+                ' <div class="mobbuttonosm"></div>'+
+                '</div>'+
+                '</div><hr /></div></ul></div>'
+
+                  }
+                  $('#osmfeeds').append(feedhtml)
+                  //$('#osmfeeds').append('<ul>'+feedhtml+'</ul>')
+                  //console.log(feedhtml)
+                 }
+               });
+            }
+
+          }
+      else{
+        /*
+        if (scpos < scrollcount-staticscrollvalue){
+            scrollcount -= staticscrollvalue
+            //console.log(scpos, ' upppppp scrolling event fired for backward reload.....', scrollcount) 
+            $.ajax({
+                url:"/chunkreloadUP", type : "GET", 
+                data : {'direction' : 'UP'},
+                dataType: 'json',
+                success : function(result){
+                  var pg = result['success']['data'];
+                  //console.log(pg,'getresultgetresult')
+                 }
+               });
+           }
+           */
+        }
+      lastscrollTop = scpos <= 0 ? 0 : scpos // For Mobile or negative scrolling
+      
+    }, false) ;
+    
+    
+    function onLike(getid){
+        var labelid = document.getElementById("likecount"+getid) ;
+        var divosmtttid = "divosmtttl-"+getid ;
+        var osmttt = document.getElementById(divosmtttid) ;
+        var userl = "";
+        
+        $.ajax({
+              url:"/userlike/"+username, type : "POST", 
+              data : {filepath : getid, flag:"like",username:username,'firstname':firstname,'title':postfrom},
+              dataType: 'json',
+              success : function(result){
+                //labelid.innerHTML = result.count;
+                labelid.value = result.count;
+                for (var[k,v] of Object.entries(result.lduser)){
+                    if (v){
+                        userl += (k +'<br>');
+                        $(osmttt).append('<span style="display:block; >'+userl+'</span>');    
+                        }
+                      }
+                   }
+                });
+        }
+
+    function onDisLike(getid){
+        var labelid = document.getElementById("dislikecount"+getid) ;
+        var divosmtttid = "divosmtttd-"+getid ;
+        var osmttt = document.getElementById(divosmtttid) ;
+        var userl = "";
+        
+        $.ajax({
+              url:"/userlike/"+username, type : "POST", 
+              data : {filepath : getid, flag:"dislike",username:username,'firstname':firstname,},
+              dataType: 'json',
+              success : function(result){
+                //labelid.innerHTML = result.dcount;
+                labelid.value = result.dcount;
+
+                for (var[k,v] of Object.entries(result.lduser)){
+                    if (!v){
+                        userl += (k +'<br>');
+                        $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                        }
+                      }
+                  }
+              });
+        }
+
+    function onROReply(replygetid){
+        var getid = replygetid.split('roreply-')[1] ;
+        var replyid = "reply-"+getid
+        var replydiv = document.getElementById(replyid);
+        var textarea = document.getElementById("ureply-"+getid).value;
+        if (textarea.trim()){
+            $.ajax({
+                  url:"/userreply", type : "POST", 
+                  data : {filepath : getid, text:textarea},
+                  dataType: 'json',
+                  success : function(result){
+                    console.log(result);
+                    //for (var[k,v] of Object.entries(result)){
+                    //for (let i = 0; i < result.length; i++){
+                    //    console.log('xxx == ',k);
+                    //}
+                    //document.getElementById(getid).innerHTML="HELLO";
+                    replydiv.style.display = "none";
+                      }
+                  });
+        }
+        
+    }
+
+  function onLikeby(likebyid){
+      var divosmtttid = "divosmtttl-"+likebyid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/likeby", type : "POST", 
+            data : {filepath : likebyid, flag:"like",},
+            dataType: 'json',
+            success : function(result){
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (v){
+                      if ( k != 'undefined'){
+                         userl += (k +'<br>');
+                         $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                         }
+                       }
+                    }
+                 }
+              });
+      }
+
+  function onDisLikeby(dislikebyid){
+      var divosmtttid = "divosmtttd-"+dislikebyid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/likeby", type : "POST", 
+            data : {filepath : dislikebyid, flag:"dislike",},
+            dataType: 'json',
+            success : function(result){
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (!v){
+                      userl += (k +'<br>');
+                      $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                      }
+                    }
+                 }
+              });
+      
+  }
+
+  function Colapse_Reply_Div(getid){
+    var replydiv = document.getElementById("reply-"+getid);
+    replydiv.style.display='none';
+    var expandgetid = getid
+    var thiswdg = document.getElementById(expandgetid);
+    thiswdg.value = 'Expand';
+    }    
+
+function Collapse_Expand_Div(expandgetid){
+    var replydiv = document.getElementById("append-reply-"+expandgetid);
+    replydiv.style.display='none';
+    var thiswdg = document.getElementById(expandgetid);
+    thiswdg.value = 'Expand';
+    replydiv.innerHTML = '<br>';  
+    }
+
+  function onAPLike(aplgetid){
+      var [flag, idcount, getpath ] = aplgetid.split('--')
+      
+      $.ajax({
+          url:"/aplike", type : "POST", 
+          data : {filepath : getpath, idcount:idcount, flag:flag,},
+          dataType: 'json',
+          success : function(result){
+            if (flag.toLowerCase().trim()==='like'){
+                var labelid = 'l-'+idcount+'-'+getpath.trim();
+                var count = new Set(result['lusername']).size; // unique username count
+                //var count = result['lusername'].length;
+                document.getElementById(labelid).innerHTML = count;
+               }
+            else{
+                var labelid = 'd-'+idcount+'-'+getpath.trim();
+                var count = new Set(result['dusername']).size; // unique username count
+                //var count = result['dusername'].length;
+                document.getElementById(labelid).innerHTML = count;
+                }
+            
+               }
+            });
+    }
+
+    </script>
+</html>

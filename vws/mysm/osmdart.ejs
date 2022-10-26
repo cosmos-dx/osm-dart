@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+      .imguserclass {
+          border-radius: 50%;
+          width:10%; height:10%;
+        }
+      .imguploadclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+      }
+    </style> 
+
+<%- include('osmheader.ejs') %>
+
+
+
+  <div class="container" style="width:170%; background-image: url('/public/assets/img/myimg.gif');">
+      
+      <br>
+  
+  
+	   <h5 id="dpinfo" ><%= spinfo.info %></h5> 
+      <h6><%= search_result %>  </h6> 
+      <form action="/userpost" method = "POST" id = "upostform" 
+       enctype= "application/x-www-form-urlencoded">
+      <input type='text' name='username' style="display:none;" value= '<%= spinfo.user %>'/>
+      <input type='text' name='firstname' style="display:none;" value= '<%= spinfo.firstname %>'/>
+      <textarea type='text' name='upost' id='upost' cols="40" rows="7"></textarea>
+      
+      <input type="image" src="/public/assets/img/osmpost.png" alt="Submit" 
+         name='usubmit' id='usubmit' value="POST" disabled width="48" height="48"> 
+
+      </form>
+
+      <form action="/imguplod" enctype="multipart/form-data" method="POST">
+        <label for="iupload" class="imguploadclass">
+         <img for="iupload" class="imguploadclass" src="/public/assets/img/imgupload.jpg" alt="ImageUpload"> 
+      </label>
+          <input type="file" name="iupload" id = "iupload" 
+          style="visibility:hidden;" accept=".jpg, .jpeg, .png, .gif"/>
+          <input type="submit" value="&#9989;" id = "imgupload" style = "display: none;" />
+          <input type="button" value="&#x274C;" id = "imgcancel" style = "display: none;" />
+          <br>
+          <br>
+      </form>
+
+
+
+      <div id='osmfeeds'>
+      </div>
+
+  </div>
+  
+
+</body>
+
+<script >
+    /*
+    */
+    var username = '<%= spinfo.user %>'; 
+    var firstname = '<%= spinfo.firstname %>'; 
+    var postfrom = '<%= spinfo.title %>'; 
+    
+    function showhidelements (v1,v2,v3, info=""){
+        var postel = document.getElementById("usubmit");
+        var imguploadel = document.getElementById("imgupload");
+        var cancelel = document.getElementById("imgcancel");
+        document.getElementById("dpinfo").innerHTML = info;
+        postel.style.display = v1;
+        imguploadel.style.display = v2;
+        cancelel.style.display = v3;
+    }
+
+     document.getElementById("iupload").onchange = function(e)
+     {
+        showhidelements("none","initial","initial", "Ready to Upload Your Image File");
+     }
+
+     document.getElementById("imgupload").onclick = function(e)
+     {
+        showhidelements("initial","none","none", "Image Uploaded !!");
+     }
+
+     document.getElementById("imgcancel").onclick = function(e)
+     {
+        showhidelements("initial","none","none", "Image Uploaded CANCEL !!");
+     }
+
+     document.getElementById("upost").oninput = function(e)
+     {
+       var val = document.getElementById("upost").value;
+       if (val){
+        document.getElementById("usubmit").disabled = false;
+        document.getElementById("dpinfo").innerHTML = 'Well-Come '+username;
+      }
+       else{
+        document.getElementById("usubmit").disabled = true;
+        document.getElementById("dpinfo").innerHTML = 'Write Some Text !';
+      }
+        
+     }
+
+</script>
+</html>

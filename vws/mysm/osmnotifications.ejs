@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+      .imguserclass {
+          border-radius: 50%;
+          width:7%; height:7%;
+        }
+      .imguploadclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+      }
+      .dartimgclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+      }
+      .myDiv {
+        border-radius: 15px 15px 20px 20px;
+        background-color: lightblue;    
+        text-align: center;
+      }
+    </style> 
+
+<%- include('osmheader.ejs') %>
+
+<div class="container" style="width:170%; background-image: url('/public/assets/img/myimg.gif');">
+    
+    <br><br><br>
+	<h5><%= spinfo.info %></h5> 
+    
+    <!-- <form action="/osmtrendsearch" method = "POST" id = "osmtrendsearch" 
+     enctype= "application/x-www-form-urlencoded">
+ -->
+    <input type='text' name='username' style="display:none;" value= '<%= spinfo.user %>'/>
+
+    <% for(var keys in textdt) { %>
+      <form action="/opennote" method="POST" id="expand" dataType="json", contentType="application/json">
+
+       <button class="myDiv" type="submit" id="notepath" name="notification" value="<%= textdt[keys]['username'] %>">
+        <input type="hidden" name="notedata" value="<%= JSON.stringify(textdt[keys]) %>"></input>
+       <label class="labelosm">@<%= textdt[keys]['username'] %> - [<%= textdt[keys]['firstname'] %>] 
+        <p class="timeparaosm"><%= textdt[keys]['data']['created'] %></p>
+           <p class="labelosm"><%= textdt[keys]['text'] %></p>
+       </label>
+       </button>
+    </form>
+    <% }  %> 
+    
+    <div>
+    
+
+ </div>
+</div>
+  
+</div>
+    </body>
+    <script type="text/javascript">
+
+    //var name='<%= spinfo.user %>';
+    //var firstname ='<%= spinfo.firstname %>';
+
+    </script>
+    </html>    

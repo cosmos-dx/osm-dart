@@ -1,0 +1,145 @@
+    <!DOCTYPE html>
+    
+    <html lang="en">
+    
+    <style>
+        .imgaccssclass {
+          border-radius: 50%;
+        }
+        .imgbanner {
+          max-width: 125% ;
+          max-height: 125%
+        }
+        .imguploadclass {
+          border-radius: 50%;
+          width:30px; height:30px;
+      }
+    </style> 
+
+    <%- include('osmheader.ejs') %>
+        
+    <div class="container" style="width:170%; background-image: url('/public/assets/img/myimg.gif');">
+      <div>
+        <h2><%= username %>'s - Account </h2>
+
+        <img class="imgbanner" src="..//<%= spinfo.aboutdata.bannerimg %>" alt="bannerimg">
+        
+        <form action="/bannerimgupload" enctype="multipart/form-data" method="POST">
+          <label for="bannerimg" class="imguploadclass">
+              <img for="bannerimg" class="imguploadclass" src="/public/assets/img/imgupload.jpg" alt="ImageUpload"> 
+          </label>
+
+          <input type="file" id='bannerimg' name="bannerimg" style="visibility:hidden;"
+            value="" accept=".jpg, .jpeg, .png, .gif" />
+              
+          <input type="submit" class="wdgreply" id='getbannerimg' name='getbannerimg' 
+                 style="font-size: 15px;" value="Upload"  />
+          
+          <br>
+          <br>
+      </form>
+      </div>
+      <div style="text-align: left; padding-left:7%;">
+        <label  id="bannerimgname" 
+          style="text-align:justify; min-width: 50%; font-size: 15px;"></label>
+      </div>
+
+        <div>
+        <img class="imgaccssclass" src="..//<%= spinfo.userimgpath %>" alt="osmimg" width="20%" height="20%">
+        
+        <form action="/accountimgupload" enctype="multipart/form-data" method="POST">
+          <label for="accountimg" class="imguploadclass">
+              <img for="accountimg" class="imguploadclass" src="/public/assets/img/imgupload.jpg" alt="ImageUpload"> 
+          </label>
+
+          <input type="file" id='accountimg' name="accountimg" style="visibility:hidden;"
+            value="" accept=".jpg, .jpeg, .png, .gif" />
+              
+          <input type="submit" class="wdgreply" id='getimgupload' name='getimgupload' 
+                 style="font-size: 15px;" value="Upload"  />
+          
+          <br>
+          <br>
+      </form>
+
+        <!--<input type="button" class="wdgreply" id='img-<%= spinfo.userdir %>' style="visibility:hidden;"
+                 value="Upload" onclick="onImageUpload(this.id)" />-->
+        <!--<input type="button" class="wdgreply" id='getimgupload' name='getimgupload' 
+                 value="Upload" onclick="onImageUpload(this.id)" />-->
+        </div>
+      <div style="text-align: left; padding-left:7%;">
+        <label  id="uploadimgname" 
+          style="text-align:justify; min-width: 50%; font-size: 15px;"></label>
+      </div>
+      <div class="login-form" style="margin-left: 5px;">
+        <form action="/aboutfill" method = "POST" id = "upostform" enctype= "application/x-www-form-urlencoded">
+          <textarea type='text' name='about' id='about' cols="70" rows="5"
+           placeholder = '<%= firstname %> Write About YourSelf' ><%= spinfo.aboutdata.about %></textarea>
+          <textarea type='text' name='description' id='description' cols="70" rows="5" 
+          placeholder="Description"><%= spinfo.aboutdata.description %></textarea>
+          <textarea type='text' name='key' id='key' cols="70" rows="2" 
+          placeholder = "Key Intrest"><%= spinfo.aboutdata.key %></textarea>
+
+          <input type="submit" name="submit" value="SUBMIT" \>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+    </body>
+    <script type="text/javascript">
+      
+      var userdir = '<%= spinfo.userdir %>';
+      var dirobj = '<%= JSON.stringify(spinfo.aboutdata) %>';
+      //console.log(dirobj);
+      var selectedfilename = ''; 
+      var selectedfilepath = '';
+     
+      $(document).ready(function(){
+        $("#getimgupload").hide();
+        $("#getbannerimg").hide();
+        }); 
+
+
+        $("#accountimg").change(function() {
+              var filelist = this.files ;
+              selectedfilename = filelist[0].name;
+              
+              $("#uploadimgname").text(selectedfilename);
+              $("#getimgupload").show();
+              selectedfilepath = userdir+'//'+selectedfilename
+              
+            });
+
+        $("#bannerimg").change(function() {
+              var filelist = this.files ;
+              selectedfilename = filelist[0].name;
+              
+              $("#bannerimgname").text(selectedfilename);  
+              $("#getbannerimg").show();
+              selectedfilepath = userdir+'//'+selectedfilename
+              
+            });
+
+        // async function onImageUpload(uploadid){
+        //     let formData = new FormData(); 
+    
+        //     formData["accountimg"]=JSON.stringify(accountimg.files[0]);
+            
+        //     console.log('upload selectedfilepath', selectedfilepath)
+            
+        //     $.ajax({
+        //           url:"/accountimgupload", type : "POST", 
+        //           data : {filepath:selectedfilepath, userdir:userdir, flag:"imgupload",
+        //            name:selectedfilename,
+        //           },
+        //           dataType: 'json',
+        //           success : function(result){
+        //              console.log('ready to upload', selectedfilepath)
+        //          }
+        //      });
+             
+        //     }
+
+    </script>
+    </html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+      .imguserclass {
+          border-radius: 50%;
+          width:20%; height:20%;
+          float:left;
+        }
+      .imguploadclass {
+        border-radius: 50%;
+        width:50px; height:50px;
+        float:center;
+      }
+      .imgusereplyclass {
+          border-radius: 50%;
+          width:10%; height:40%;
+          float:left;
+        }
+      .imgreplyclass{
+        width:50%; height:50%;
+      }
+      .dartimgclass {
+        border-radius: 50%;
+      }
+      .expandtextparaosm{
+        font-family: "Courier New", monospace;
+        font-weight:bold;
+        font-size: 1.5em;
+        color: black;
+        border-radius: 5px 5px 5px 5px;
+        width: 500px;
+        padding: 10px;
+     }
+     
+      .vertical {
+          border-left: 2px solid black;
+          height: relative;
+          position:relative;
+          left: 10%;
+      }
+
+      .preLeftAlign{
+          padding-left: 25px;
+          margin-top: -25px;
+          text-align: left;
+          color: black;
+        }
+      
+      .hoverwdgreply{
+            font-size: 0.85em; 
+            color: navy;
+            cursor:pointer;
+            background-color:powderblue;
+            border-radius: 10px 10px 10px 10px;
+        }
+      .hoverwdgreply:hover{
+            background-color:rgb(72, 255, 0);
+            color: rgb(5, 0, 0);
+            box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+            transform: translateY(-0.25em);
+        }
+       
+      .likebtn{
+            background: url(/public/assets/img/like.png);
+            width: 35px;
+            cursor:pointer;
+            background-color:snow;
+            border-radius: 10px 10px 10px 10px;
+           }
+
+      .dislikebtn{
+            background: url(/public/assets/img/dislike.png);
+            width: 35px;
+            cursor:pointer;
+            background-color:snow;
+            border-radius: 10px 10px 10px 10px;
+           }
+
+      .likebtn:hover{
+            background-color:rgb(72, 255, 0);
+            color: rgb(5, 0, 0);
+            box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+            transform: translateY(-0.25em);
+        }
+
+      .dislikebtn:hover{
+            background-color:rgb(72, 255, 0);
+            color: rgb(5, 0, 0);
+            box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+            transform: translateY(-0.25em);
+        } 
+    </style> 
+
+<%- include('osmheader.ejs') %>
+
+
+<div class="container" style="width:170%; background-image: url('/public/assets/img/myimg.gif');">
+      
+  <!--  
+  <div id="osmpost" style="float: right; margin-right: 25%; ">
+    <form action="/osmpostopen" method = "POST" id = "upostform" 
+       dataType="json", contentType = "application/json">
+      <input type="image" src="/public/assets/img/osmpost.png" alt="Submit" class="dartimgclass"
+         name='usubmit' id='usubmit' value="<%= spinfo %>" style="position: fixed;" width="48" height="48"> 
+      <input type='text' name='username' style="display:none;" value= "<%= spinfo.user %>" />
+      <input type='text' name='firstname' style="display:none;" value= "<%= spinfo.firstname %>" />
+      <input type='text' name='upost' id='upost' style="display:none;" value= "<%= spinfo.firstname %>" />
+    </form>
+  </div>
+  -->
+  <br><br><br>
+
+  <div id='osmfeeds'>
+    <h6><%= search_result %>  </h6> 
+  <ul>
+    <div id='osmsingle' >
+      <label class="labelosm">
+          <pre class="timeparaosm">
+            <a href="/useraccount/<%= textdt.username %>?fname=<%= textdt.firstname %>">
+            <img class="imguserclass" src="..//<%= textdt.path.split('\\').slice(0, 
+              textdt.path.split('\\').length-1).join('\\')+'\\'+imgdir+'\\'+
+              textdt.username+'.jpg' %>" alt="osmimg" >
+              @<%= textdt.username %>[<%= textdt.firstname %>] - <%= textdt.created %>
+            </a>
+          </pre>
+            <% if(textdt.img.length > 0){ %>
+               <img src="..//<%= textdt.img %>" alt="osmimg" width="70%" height="70%">
+            <% }  %>
+            
+          <pre class="preLeftAlign">
+              <br/><%= textdt.text %>
+          </pre>
+      </label>
+      <br>
+      <div class="buttonosm">
+          
+      <div id="divosmtttl-<%= textdt.path %>" class="osmtooltip" 
+          style="display:inline-flex;" list="userld" >
+        <input type="button" class="hoverwdgreply"  id='<%= textdt.path %>' name="likeby"
+         value="<%= textdt.ld.lcount %>" onclick="onLikeby(this.id)" />
+      </div>  
+        
+        <input type="button"  id='<%= textdt.path %>' name="like" class="likebtn"
+          onclick="onLike(this.id)"/>
+      <!--
+        <input type="button" id="likecount<%= textdt.path %>" name="likecount" class="hoverwdgreply"
+          value='<%= textdt.ld.lcount %>' />
+      -->
+        <input type="button" id='<%= textdt.path %>' name="dislike" class="dislikebtn"
+          onclick="onDisLike(this.id)" />
+      <!--
+        <input type="button" id="dislikecount<%= textdt.path %>" name="dislikecount" class="wdgreply"
+          value='<%= textdt.ld.dcount %>' />
+      -->
+      <div id="divosmtttd-<%= textdt.path %>" class="osmtooltip" 
+          style="display:inline-flex;" list="userld" >
+        <input type="button" class="hoverwdgreply" id='<%= textdt.path %>' name="dislikeby"
+             value="<%= textdt.ld.dcount %>" onclick="onDisLikeby(this.id)" />
+      </div>
+
+        <input type="button" class="hoverwdgreply" id="mireply-<%= textdt.path %>"  name="reply"
+          value="<%= textdt.rcount %> Reply" onclick="onReply(this.id)" />
+      
+      </div>
+      <br>
+      <div class="buttonosm" id="userreply" >
+   
+          <div id="reply-<%= textdt.path %>" style="display:none;">
+              <br>
+              <textarea type='text' name='upost' id='ureply-<%= textdt.path %>' cols="40"></textarea>
+              <div class="buttonosm">
+                  
+                  <button class="labellikedp" id="replylike-<%= textdt.path %>" 
+                      name="replylike-<%= textdt.path %>" value='<%= textdt.path %>'>
+                  <img src="/public/assets/img/like.png" height="80%" width="80%" /></button>
+                  <label class="labellikedp" id="replylikecount-<%= textdt.path %>">
+                      <%= textdt.like %></label>
+                  <button class="labellikedp" id="replydislike-<%= textdt.path %>"
+                   name="replydislike-<%= textdt.path %>" value='<%= textdt.path %>'>
+                      <img src="/public/assets/img/dislike.png" height="80%" width="80%" /></button>
+                  <label class="labellikedp" id="replylikecount-<%= textdt.path %>">
+                      <%= textdt.dislike %></label>
+                  
+                  <input type="button" id="roreply-<%= textdt.path %>"  name="roreply"
+                  value="POST" onclick="onROReply(this.id)" />
+              </div>
+          </div>
+
+          <!------  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx            -->
+          <div class="vertical" id="userreplyid" >
+            <% for(var keys in textdt.reply) { %>
+              <br>
+              <div class="buttonosm">
+              <tr class = "vertical ">
+                 <td><label class="labelosm">
+                  <div>
+                  <img class="imgusereplyclass" src="..//<%= textdt.reply[keys].path.split('\\').slice(0, 
+        textdt.reply[keys].path.split('\\').length-2).join('\\')+'\\'+imgdir+'\\'+
+        textdt.reply[keys].username+'.jpg' %>" alt="osmimg" >
+                  @<%= textdt.reply[keys].username %>-[<%= textdt.reply[keys].firstname.replace(/\s/g, "") %>]
+                </div>
+                  <p class="timeparaosm">
+                  
+                   <% if(textdt.reply[keys].img.length > 0){ %>
+                   
+                    <img class="imgreplyclass" src="..//<%= textdt.reply[keys].img %>" alt="osmimg">
+                    <br>
+                <% }  %> 
+
+                 <%= textdt.reply[keys].text %>
+                    
+                
+                 </p>
+               </label></td>
+                 
+               </tr>
+              </div>
+                
+                
+              <% } %>
+          </div>
+          <!------  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx            -->
+
+
+      </div>
+      <hr />
+      
+    </div>
+  </ul>
+
+  </div>
+
+</div>
+
+</body>
+
+<script >
+    /*
+    */
+     
+    var mainuser = '<%= username %>'; 
+    var mainfirstname = '<%= firstname %>'
+    var username = '<%= textdt.username %>' //'<%= spinfo.user %>'; 
+    var firstname = '<%= textdt.firstname %>'; 
+    var postfrom = '<%= spinfo.title %>'; 
+    var imgdir = '<%= imgdir %>'; 
+    var replyappendmess = true; // this flag will validate rely post for only once; set to false after clicking reply
+ 
+
+  function OnUserAppendReply(mainuser, mainfirstname, username, firstname, filepath, replyfilepath){
+     
+     $('#userreply').append('<div>'+
+      '<label id="dpinfo" class="labelosm"></label> '+
+    '<form action="/userreplypost" method = "POST" id = "upostform" '+
+    '  enctype= "application/x-www-form-urlencoded"> '+           
+    ' <input type="text" name="username" style="display:none;" value= "'+username+'"/>'+
+    ' <input type="text" name="firstname" style="display:none;" value= "'+firstname+'"/>'+
+    ' <input type="text" name="mainuser" style="display:none;" value= "'+mainuser+'"/>'+
+    ' <input type="text" name="mainfirstname" style="display:none;" value= "'+mainfirstname+'"/>'+
+    ' <input type="text" name="masterreplyfilepath" style="display:none;" value= "'+replyfilepath+'"/>'+
+    ' <textarea type="text" name="replyupost" id="replyupost" cols="40" rows="7"></textarea>'+
+    ' <input type="image" src="/public/assets/img/osmpost.png" alt="Submit" '+
+    '   name="usubmit" id="usubmit" value="POST" disabled width="48" height="48"> '+
+
+    '</form> '+
+
+    '<form action="/userreplyimguplod/'+username+'/'+firstname+'/'+filepath+' " '+
+    '  enctype="multipart/form-data" method="POST" >'+
+    ' <label for="iupload" class="imguploadclass" id="rlabelimgappend" >'+
+    '<img for="iupload" class="imguploadclass" id="rimgappend" '+
+    'src="/public/assets/img/imgupload.jpg" alt="ImageUpload">'+ 
+    ' </label>'+
+    '<label id="uploadinfo" ></label> '+
+    '<input type="file" id="iupload" name="iupload" style="visibility:hidden;" '+
+    '            value="" accept=".jpg, .jpeg, .png, .gif" /> '+
+    '<button type="submit" class="btn btn-success" id="imguploadbtn" style="display: none;"> Upload <span class="fa fa-arrow-right"></span></button>'+
+
+              
+    '<br><br></form>'+
+
+    '</div>'
+    
+)
+  
+  document.getElementById("replyupost").oninput = function(e)
+  {
+    var text = this.value
+    if (text.length > 0){
+      document.getElementById("usubmit").disabled = false;
+      $("#dpinfo").text('');
+    }
+    else{
+      document.getElementById("usubmit").disabled = true;
+      $("#dpinfo").text('Write Something.....');
+    }
+   
+  } 
+
+  document.getElementById("iupload").onchange = function(e)
+  {
+    var selectedfilarray = this.value.split('\\')
+    var selectedarraylen = selectedfilarray.length
+    var selectedfilename = selectedfilarray.slice(selectedarraylen-1, selectedarraylen)[0]
+    document.getElementById("usubmit").style.display='none';
+    $("#uploadinfo").text(selectedfilename);
+    document.getElementById("imguploadbtn").style.display='block';
+      
+  }
+
+ document.getElementById("imguploadbtn").onclick = function(e)
+ {
+  $("#uploadinfo").empty();
+  document.getElementById("usubmit").style.display='block';
+  document.getElementById("imguploadbtn").style.display='none';
+  document.getElementById("rlabelimgappend").style.display='none';
+  document.getElementById("rimgappend").style.display='none';
+  var text = $("#replyupost").val()
+  console.log('dfsdf', text)
+  document.getElementById("usubmit").disabled = false;
+    ///showhidelements("initial","none","none", "Image Uploaded !!");
+ }
+
+ 
+
+  }
+
+  function onLike(getid){
+      var labelid = document.getElementById("likecount"+getid) ;
+      var divosmtttid = "divosmtttl-"+getid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/userlike/"+username, type : "POST", 
+            data : {filepath : getid, flag:"like",username:username,'firstname':firstname,'title':postfrom},
+            dataType: 'json',
+            success : function(result){
+              //labelid.innerHTML = result.count;
+              labelid.value = result.count;
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (v){
+                      userl += (k +'<br>');
+                      $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                      }
+                    }
+                 }
+              });
+      }
+    
+
+  function onDisLike(getid){
+      var labelid = document.getElementById("dislikecount"+getid) ;
+      var divosmtttid = "divosmtttd-"+getid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/userlike/"+username, type : "POST", 
+            data : {filepath : getid, flag:"dislike",username:username,'firstname':firstname,},
+            dataType: 'json',
+            success : function(result){
+              //labelid.innerHTML = result.dcount;
+              labelid.value = result.dcount;
+
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (!v){
+                      userl += (k +'<br>');
+                      $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                      }
+                    }
+                }
+            });
+      }
+ 
+  function onReply(replygetid){
+      if (replyappendmess){ 
+        var replyfilepath = replygetid.split('mireply-')[1] ;
+        //Collapse_Expand_Div(getid)
+        // required filepath cannot be send via server POST Method, raise error
+        // because filepath is parameter is sending for imgupload form POST
+        var filepath = replyfilepath.split('\\').join("_") 
+         document.getElementById("userreplyid").style.display='none'; 
+         
+         OnUserAppendReply(mainuser, mainfirstname, username,firstname, filepath, replyfilepath);
+         var replyid = "reply-"+replyfilepath
+         var replydiv = document.getElementById(replyid);
+         //var replydiv = document.getElementById("userappendreply");
+         var textareawdg = document.getElementById("ureply-"+replyfilepath);
+         textareawdg.value = "";
+         ////replydiv.style.display='block';
+         replyappendmess = false; // reply button must append only once otherwise this would append multiples divs 
+       }
+      
+      
+  }
+
+  function onROReply(replygetid){
+      var getid = replygetid.split('roreply-')[1] ;
+      var replyid = "reply-"+getid
+      var replydiv = document.getElementById(replyid);
+      var textarea = document.getElementById("ureply-"+getid).value;
+      if (textarea.trim()){
+          $.ajax({
+                url:"/userreply", type : "POST", 
+                data : {filepath : getid, text:textarea},
+                dataType: 'json',
+                success : function(result){
+                  console.log(result);
+                  //for (var[k,v] of Object.entries(result)){
+                  //for (let i = 0; i < result.length; i++){
+                  //    console.log('xxx == ',k);
+                  //}
+                  //document.getElementById(getid).innerHTML="HELLO";
+                  replydiv.style.display = "none";
+                    }
+                });
+      }
+      
+  }
+
+  function onLikeby(likebyid){
+      var divosmtttid = "divosmtttl-"+likebyid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/likeby", type : "POST", 
+            data : {filepath : likebyid, flag:"like",},
+            dataType: 'json',
+            success : function(result){
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (v){
+                      if ( k != 'undefined'){
+                         userl += (k +'<br>');
+                         $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                         }
+                       }
+                    }
+                 }
+              });
+      }
+
+  function onDisLikeby(dislikebyid){
+      var divosmtttid = "divosmtttd-"+dislikebyid ;
+      var osmttt = document.getElementById(divosmtttid) ;
+      var userl = "";
+      
+      $.ajax({
+            url:"/likeby", type : "POST", 
+            data : {filepath : dislikebyid, flag:"dislike",},
+            dataType: 'json',
+            success : function(result){
+              for (var[k,v] of Object.entries(result.lduser)){
+                  if (!v){
+                      userl += (k +'<br>');
+                      $(osmttt).append('<span class="osmtooltiptext">'+userl+'</span>');    
+                      }
+                    }
+                 }
+              });
+      
+  }
+
+   function Colapse_Reply_Div(getid){
+      var replydiv = document.getElementById("reply-"+getid);
+      replydiv.style.display='none';
+      var expandgetid = 'expand-'+getid
+      var thiswdg = document.getElementById(expandgetid);
+      thiswdg.value = 'Expand';
+      }    
+
+  function Collapse_Expand_Div(getid){
+      var expandgetid = 'expand-'+getid;
+      var replydiv = document.getElementById("append-reply-"+getid);
+      replydiv.style.display='none';
+      var thiswdg = document.getElementById(expandgetid);
+      thiswdg.value = 'Expand';
+      replydiv.innerHTML = '<br>';  
+      }
+
+ async function onImageUpload(uploadid){
+      var getid = uploadid.split('img-')[1] ;
+      let formData = new FormData(); 
+      //let photo = document.getElementById(uploadid).files;
+      
+      formData.append("file", fileupload.files[0]);
+      var uploadfilename = fileupload.files[0].name; 
+      var uploadfiledeta = fileupload.files[0]
+      
+      $.ajax({
+            url:"/imgupload", type : "POST", 
+            data : {filepath:getid, flag:"imgupload",
+            name:uploadfilename,
+            },
+            dataType: 'json',
+            success : function(result){
+               console.log('ready to upload', getid)
+           }
+       });
+       
+      }
+
+function onAPLike(aplgetid){
+    var [flag, idcount, getpath ] = aplgetid.split('--')
+    
+    $.ajax({
+          url:"/aplike", type : "POST", 
+          data : {filepath : getpath, idcount:idcount, flag:flag,},
+          dataType: 'json',
+          success : function(result){
+            if (flag.toLowerCase().trim()==='like'){
+                var labelid = 'l-'+idcount+'-'+getpath.trim();
+                var count = new Set(result['lusername']).size; // unique username count
+                //var count = result['lusername'].length;
+                document.getElementById(labelid).innerHTML = count;
+               }
+            else{
+                var labelid = 'd-'+idcount+'-'+getpath.trim();
+                var count = new Set(result['dusername']).size; // unique username count
+                //var count = result['dusername'].length;
+                document.getElementById(labelid).innerHTML = count;
+                }
+            
+               }
+            });
+}
+
+</script>
+</html>

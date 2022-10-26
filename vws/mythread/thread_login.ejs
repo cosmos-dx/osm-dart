@@ -1,0 +1,57 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/assets/css/mystyles.css"> 
+    <link rel="stylesheet" href="/public/assets/css/bootstrap.css"> 
+    <script type = "text/javascript"  src="/public/assets/js/minajax.js"></script>
+    <!-- <script type = "text/javascript"  src= 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script> -->
+    <title><%= spinfo.title %></title>
+</head>
+
+    <body>
+        <div class="container" style="background-image: url('/public/assets/img/myimg.jpg');">
+            <label style="color: white;" >Join Our Social Network </label>
+    		<div class="login-form">
+                
+                <form action="/thread_page_open" method="post">
+    				<div class="info" style="color: white;" id="info" ><%= spinfo.info %></div>
+    					<input type="text" name="username" placeholder="Username" class="rmsinput" 
+                        style="text-transform:lowercase;" required="required" />
+    				
+    					<input type="password" name="password" placeholder="Password" class="rmsinput" required="required"/>
+    				
+                   
+    				<!-- //checking if the session 'error' is set. Erro session is the message if the 'Username' and 'Password' is not valid.
+                        Display Login Error message -->
+
+    					<div class="info" style="color: white;" id="alert" ><%= spinfo.alert %></div>
+    				
+    					<!-- // Unsetting the 'error' session after displaying the message. 
+    					unset($_SESSION['error']);
+                        -->
+    					
+    				<button  id="login" class="btn btn-primary btn-block " name="login" >
+                        <span class="glyphicon glyphicon-log-in"></span>Login</button>
+
+    			</form>	
+                
+                
+    			<form method="GET" action="/mysmregister">
+                    <label></label>
+                    <button  id="register" class="btn btn-primary btn-block " name="register" >
+                        <span class="glyphicon glyphicon-log-in"></span>Press to Sign-UP</button>
+                    
+                </form>
+    		</div>
+    	    <div>
+                
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+
+    </script>
+    </html>

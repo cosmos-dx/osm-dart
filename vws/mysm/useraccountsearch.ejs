@@ -1,0 +1,42 @@
+    <!DOCTYPE html>
+    
+    <html lang="en">
+    
+    <style>
+        .imgaccssclass {
+          border-radius: 50%;
+        }
+        .imgbanner {
+          max-width: 125% ;
+          max-height: 125%
+        }
+        .imguploadclass {
+          border-radius: 50%;
+          width:30px; height:30px;
+      }
+    </style> 
+
+    <%- include('osmheader.ejs') %>
+        
+    <div class="container" style="width:170%; background-image: url('..//<%= spinfo.aboutdata.bannerimg %>');">
+      <h2><%= spinfo.searchusername %> [<%= spinfo.searchfirstname %>] </h2>
+        <div>
+          <img class="imgaccssclass" src="..//<%= spinfo.userimgpath %>" alt="osmimg" width="20%" height="20%"> 
+        </div>
+      
+      <div class="info">
+          <textarea type='text' name='about' id='about' cols="70" rows="5"
+           placeholder = '<%= firstname %> Write About YourSelf' readonly ><%= spinfo.aboutdata.about %></textarea>
+          <textarea type='text' name='description' id='description' cols="70" rows="5" 
+          placeholder="Description" readonly ><%= spinfo.aboutdata.description %></textarea>
+          <textarea type='text' name='key' id='key' cols="70" rows="2" 
+          placeholder = "Key Intrest" readonly ><%= spinfo.aboutdata.key %></textarea>
+      </div>
+
+    </div>
+  </div>
+    </body>
+    <script type="text/javascript">
+      
+    </script>
+    </html>

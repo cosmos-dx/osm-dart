@@ -1,0 +1,37 @@
+/////////////////////////
+{
+  iupload: PersistentFile {
+    _events: [Object: null prototype] { error: [Function (anonymous)] },
+    _eventsCount: 1,
+    _maxListeners: undefined,
+    lastModifiedDate: 2022-09-06T14:13:18.812Z,
+    filepath: 'C:\\Users\\91783\\AppData\\Local\\Temp\\0edd33a19a55165df9daa5700',
+    newFilename: '0edd33a19a55165df9daa5700',
+    originalFilename: 'WIN_20210810_12_39_06_Pro.jpg',
+    mimetype: 'image/jpeg',
+    hashAlgorithm: false,
+    size: 53337,
+    _writeStream: WriteStream {
+      fd: 4,
+      path: 'C:\\Users\\91783\\AppData\\Local\\Temp\\0edd33a19a55165df9daa5700',
+      flags: 'w',
+      mode: 438,
+      start: undefined,
+      pos: undefined,
+      bytesWritten: 53337,
+      closed: false,
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      [Symbol(kFs)]: [Object],
+      [Symbol(kIsPerformingIO)]: false,
+      [Symbol(kCapture)]: false
+    },
+    hash: null,
+    [Symbol(kCapture)]: false
+  }
+}
+
+
+///////////////////////////////////

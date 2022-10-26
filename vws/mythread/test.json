@@ -1,0 +1,46 @@
+{
+    "created": "23/09/2022-16:43:30",
+    "img": "",
+    "text": "abhi Well-Come to OSM !!",
+    "username": "abhi",
+    "vid": "",
+    "vote": "",
+    "like": "",
+    "dislike": "",
+    "path": "vws\\mythread\\test.json",
+    "ld": {
+        "lcount": 0,
+        "dcount": 0,
+        "username": {}
+    },
+    "reply": {
+        "0": {
+            "created": "",
+            "img": "",
+            "username": "",
+            "firstname": "",
+            "text": "",
+            "path": "",
+            "lcount": 0,
+            "dcount": 0,
+            "like": "",
+            "dislike": "",
+            "vid": "",
+            "vote": "",
+            "ld": {
+                "lcount": 0,
+                "dcount": 0,
+                "username": {},
+                "firstname": ""
+            },
+            "reply": {}
+        },
+        "rcount": 0,
+        "lcount": 0,
+        "dcount": 0
+    },
+    "firstname": "abhishek",
+    "rcount": "0",
+    "lcount": "0",
+    "dcount": "0"
+}

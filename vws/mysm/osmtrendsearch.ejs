@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+       <%- include('osmheader.ejs') %>
+
+        <div class="container" style="width:170%; background-image: url('/public/assets/img/myimg.gif');">
+            
+            <br><br><br>
+    		<h5><%= spinfo.info %></h5> 
+            <div class="leftdiv">
+            <!-- <form action="/osmtrendsearch" method = "POST" id = "osmtrendsearch" 
+             enctype= "application/x-www-form-urlencoded">
+            -->
+            <input type='text' name='username' style="display:none;" value= '<%= spinfo.user %>'/>
+            <input type='search' id="xsearchtext" class="inputsearch" name='<%= spinfo.user %>' 
+             autocomplete="off" value= '' oninput="onTrendsearch(event)" />
+             
+            <ul id="search-list"></ul>
+            <!-- </form> 
+            <form action="/trendsearch" method="GET" id="expand" dataType="json", 
+               contentType="application/json" oninput="this.submit();">
+                <input type='search' id="searchtext" class="inputsearch" name='search' value='' />
+            </form>
+            -->
+            </div>
+            <div>
+            
+
+         </div>
+        </div>
+  
+</div>
+    </body>
+    <script type="text/javascript">
+        console.log("ddzcs is me");
+    var name='<%= spinfo.user %>';
+    var firstname ='<%= spinfo.firstname %>';
+
+    function onTrendsearch(evt){
+        var text = evt.target.value ;
+        var username = evt.target.name ;
+        var dplist = document.getElementById("search-list");
+
+        if (text.startsWith('@')){
+            $.ajax({
+              url:"/osmprofiles_search", type : "GET", 
+              data : {'text':text,'username':username,'firstname':firstname},
+              dataType: 'json',
+              success : function(result){
+                dplist.innerHTML = "";
+                for (i = 0; i < result.length; i++){
+                         
+                 dplist.innerHTML += "<form action='/osmprofiles_search'"+
+                 " method = 'POST' dataType= 'json', contentType = 'application/json'>" +
+                 "<div style = 'display : inline-flex;'>"+
+                 "<input class='dpline' style='width:200px;' "+
+                 " type='submit' name='listusername' value='"+result[i].username+"' /> "+
+                 "<input type='hidden' name ='listuser_firstname' value='"+result[i].firstname+"' /> "+ 
+                 "<input type='hidden' name ='text' value='"+text+"' /> "+
+                 "</div></form>";
+
+                 //dplist.innerHTML += "<form action='/osmprofiles_search?username="+username+"&text="+text+"' method = 'GET' > "+
+                 //dplist.innerHTML += "<form action='/osmprofiles_search?username="+username+"&text="+text+"' method = 'GET' > "+
+                 //"<li type='submit' class='dpline' "+
+                 //" name='"+username+"' id='"+listresult+"' "+
+                 //" >@"+listresult+"</li></form";
+                 //" onclick='itemClick(event)'>@"+listresult+"</li>";  
+                 
+                    }
+                   }
+                });
+
+                return true;
+            }
+
+        //if (text.startsWith('#')){
+        if (text.length>0){
+            $.ajax({
+              url:"/osmhastag_search", type : "GET", 
+              data : {'text':text,'username':username,'firstname':firstname},
+              dataType: 'json',
+              success : function(result){
+                dplist.innerHTML = "";
+                
+                if (result){
+                    var tname = result.success ;
+                    
+                    for (var i = 0; i < tname.length; i++){
+                        var name = tname[i];
+                        var li = document.createElement('li');
+                        
+
+                        dplist.innerHTML += "<form action='/osmhastag_search' method = 'POST' > "+
+                         "<input class='dpline' "+
+                         " type='submit' name='tname' id='"+name+"' value='"+name+"' /> "+
+                         "</form>";
+                 
+                    }
+                }
+                
+                   }
+                });
+            }
+
+
+        }
+    /*
+    function itemClick(evt){
+        var text = evt.target.id
+        var username = document.getElementById('searchtext').name ;
+        document.getElementById('searchtext').value = text;
+        document.getElementById("search-list").innerHTML = "";
+     
+        $.ajax({
+              url:"/osmprofilesearch_redirect", type : "GET", 
+              data : {text:text,username:username},
+              dataType: 'json',
+              success : function(result){
+                console.log('clickeddddd...',window.location)
+                window.location.href = 'osmprofiles_search?username='+username+'&text='+text+'';
+                   }
+                });
+       
+    }
+    */
+    </script>
+    </html>    
